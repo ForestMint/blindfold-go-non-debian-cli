@@ -16,7 +16,10 @@ Download FLAC
 - Move to win64 or win32 according to your system architecture
 - Copy flac.exe and libFLAC.dll and paste them inside C:\Windows\System32
 
-Try running your code. If it executes successfully, no need to do last step. If not, perform the following step too :
+Try running your code.
+- $ python cli.py
+
+If it executes successfully, no need to do last step. If not, perform the following step too :
 
 Open terminal in Administrator mode and execute the comments below :
 - $ cd "C:\Windows\System32"
