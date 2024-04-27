@@ -1,6 +1,9 @@
 
 
 import speech_recognition as sr
+recognizer = sr.Recognizer()
+
+
 
 import requests
 
@@ -10,25 +13,35 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-# speak structure for non-Debian OSs
-
-import pyttsx3
-engine = pyttsx3.init()
-engine.say("I will speak this text")
 
 
 
-# speak structure for Debian OSs
-'''
-import espeak
-espeak.init()
-speaker = espeak.Espeak()
-speaker.say("Hello world")
-speaker.rate = 300
-speaker.say("Faster hello world")
-'''
+def record_audio():
+    with sr.Microphone() as source:
+        print("Listening...")
+        audio = recognizer.listen(source)
+    return audio
+
+def recognize_speech(audio):
+    try:
+        text = recognizer.recognize_google(audio)
+        print(f"You said: {text}")
+    except sr.UnknownValueError:
+        print("Sorry, I couldn't understand that.")
+    except sr.RequestError:
+        print("Sorry, there was an error processing your request.")
+
+
+
+
+
+
+
+
+
 
 game_id=None
+
 
 def create_game(size,handicap,komi):
     r= requests.get('http://127.0.0.1:5000/create_game/')
@@ -51,7 +64,7 @@ def play_move(game_id, move):
 
 def is_move(game_id, move):
     r= requests.get('http://127.0.0.1:5000/is_move/')
-    return True  
+    return False  
 
 def is_playable_move(game_id, move):
     r= requests.get('http://127.0.0.1:5000/is_playable_move/')
@@ -68,24 +81,36 @@ sr.Microphone.list_microphone_names()
 
 blindfolded_player_is_black=is_blindfolded_player_black(game_id)
 label_dict={True:"black", False:"white"}
-os.system("say 'Blindfolded player plays with the "+label_dict[blindfolded_player_is_black]+" stones !'") 
-os.system("say 'Game started !'")
+#os.system("say 'Blindfolded player plays with the "+label_dict[blindfolded_player_is_black]+" stones !'") 
+#os.system("say 'Game started !'")
 
 if not blindfolded_player_is_black:
     move=request_move_from_server(game_id)
-    os.system("say 'White plays "+move+" !'")
+    #os.system("say 'White plays "+move+" !'")
 
 
 while(is_game_over(game_id)==False):
 
+    
+
+
+
+
+
     result=""
 
-    while(is_move(game_id,move)==False):
+
+
+
+
+    while(is_move(game_id,result)==False):
+        print(result)
         with mic as source:
             r.adjust_for_ambient_noise(source)
             audio = r.listen(source)
         try:
             result=r.recognize_google(audio)
+            print(result)
         except sr.UnknownValueError:
             # speech was unintelligible
             result=""
@@ -95,21 +120,25 @@ while(is_game_over(game_id)==False):
     if is_playable_move(game_id,move):
         play_move(game_id,move)
         if result == "pass":
-            os.system("say '"+label_dict[blindfolded_player_is_black]+" passes !'")
+            #os.system("say '"+label_dict[blindfolded_player_is_black]+" passes !'")
+            pass
         elif result == "resign":
-            os.system("say '"+label_dict[blindfolded_player_is_black]+" resigns !'") 
+            #os.system("say '"+label_dict[blindfolded_player_is_black]+" resigns !'") 
+            pass
         else:
-            os.system("say '"+label_dict[blindfolded_player_is_black]+" plays "+result+" !'") 
+            #os.system("say '"+label_dict[blindfolded_player_is_black]+" plays "+result+" !'") 
+            pass
     else:
-        os.system("say 'This move can't be played !'")
+        #os.system("say 'This move can't be played !'")
+        pass
 
     if is_game_over(game_id):
         break
     else:
         move_from_AI=request_move_from_server(game_id)
-        os.system("say '"+label_dict[blindfolded_player_is_black==False]+" plays "+move_from_AI+" !'")
+        #os.system("say '"+label_dict[blindfolded_player_is_black==False]+" plays "+move_from_AI+" !'")
 
 
     print(result)
 
-os.system("say 'Thanks for the game !'")
+#os.system("say 'Thanks for the game !'")
