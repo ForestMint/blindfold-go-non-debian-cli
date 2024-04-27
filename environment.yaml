@@ -1,0 +1,23 @@
+name: blindfold-go-cli
+
+channels:
+- conda-forge
+- pytorch
+- defaults
+
+dependencies:
+- speechrecognition=3.10.1
+- comtypes=1.3.1
+- pyaudio=0.2.11
+- python=3.8.19
+- pip=23.3.1
+- cmake
+- pip :
+  - pyttsx3==2.90
+#- pip :
+#  - python-espeak==0.6.3
+
+
+
+
+
