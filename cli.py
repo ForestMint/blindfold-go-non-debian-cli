@@ -3,6 +3,7 @@
 import speech_recognition as sr
 recognizer = sr.Recognizer()
 
+import json
 
 
 import requests
@@ -44,8 +45,10 @@ game_id=None
 
 
 def create_game(size,handicap,komi):
-    r= requests.get('http://127.0.0.1:5000/create_game/')
-    game_id = 12
+    r= requests.get('http://127.0.0.1:5000/create_game', data={'size': size, 'handicap':handicap, 'komi':komi})
+
+    return r.json()["game_id"]
+
 
 def is_blindfolded_player_black(game_id):
     r= requests.get('http://127.0.0.1:5000/is_blindfolded_player_black/')
@@ -74,6 +77,7 @@ size=int(config['GOBAN']['size'])
 handicap=int(config['HANDICAP']['number_of_stones'])
 komi=float(config['RULES']['komi'])
 game_id=create_game(size,handicap,komi)
+
 
 r = sr.Recognizer()
 mic = sr.Microphone()
