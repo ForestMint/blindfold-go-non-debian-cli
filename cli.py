@@ -60,17 +60,11 @@ def is_move(game_manager_uuid, candidate_speech):
     r= requests.get(url='http://127.0.0.1:5000/is_move', params={'game_manager_uuid': game_manager_uuid, 'candidate_speech':candidate_speech})
     return r.json()["result"]
 
-'''
-def is_playable_move(game_manager_uuid, move):
-    r= requests.get('http://127.0.0.1:5000/is_playable_move/')
-    return True  
-'''
-
 def submit_pass(game_manager_uuid):
-    pass
+    r= requests.get('http://127.0.0.1:5000/pass',params={"game_manager_uuid":game_manager_uuid})
 
 def resign_game(game_manager_uuid):
-    pass
+    r= requests.get('http://127.0.0.1:5000/resign',params={"game_manager_uuid":game_manager_uuid})
 
 def request_undo(game_manager_uuid):
     r= requests.get('http://127.0.0.1:5000/request_undo',params={"game_manager_uuid":game_manager_uuid})
