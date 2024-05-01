@@ -73,7 +73,7 @@ def resign_game(game_manager_uuid):
     pass
 
 def request_undo(game_manager_uuid):
-    pass
+    r= requests.get('http://127.0.0.1:5000/request_undo',params={"game_manager_uuid":game_manager_uuid})
 
 
 
