@@ -48,7 +48,8 @@ def request_move_from_server(game_manager_uuid):
     return "D4" 
 
 def is_game_over(game_manager_uuid):
-    r= requests.get('http://127.0.0.1:5000/is_game_over/')
+    r= requests.get('http://127.0.0.1:5000/is_game_over',params={"game_manager_uuid":game_manager_uuid})
+    return r.json()["result"]
     return False
 
 def play_move(game_manager_uuid, move):
