@@ -44,8 +44,10 @@ def is_blindfolded_player_black(game_manager_uuid):
     return True
 
 def request_move_from_server(game_manager_uuid):
-    r= requests.get('http://127.0.0.1:5000/request_ply_from_engine/')
-    return "D4" 
+    r= requests.get('http://127.0.0.1:5000/request_ply_from_engine',params={"game_manager_uuid":game_manager_uuid})
+    
+    return r.json()["result"]
+    return "D4"
 
 def is_game_over(game_manager_uuid):
     r= requests.get('http://127.0.0.1:5000/is_game_over',params={"game_manager_uuid":game_manager_uuid})
@@ -130,7 +132,7 @@ while(is_game_over(game_manager_uuid)==False):
     if is_game_over(game_manager_uuid):
         break
     else:
-        move_from_AI=request_move_from_server(game_manager_uuid)
+        move_from_engine=request_move_from_server(game_manager_uuid)
         #os.system("say '"+label_dict[blindfolded_player_is_black==False]+" plays "+move_from_AI+" !'")
 
 
